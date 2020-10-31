@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audio_cache.dart';//AudioCacheのインポート
 import 'clock.dart';
+
+AudioCache _player = AudioCache();
 
 void main() => runApp(
       MaterialApp(
@@ -8,46 +11,43 @@ void main() => runApp(
       ),
     );
 
-int _counter = 0;
-void _incrementCounter() {
-  _counter++;
-  return;
+
+void _sound() {//右下のボタンを押すと呼び出される、音を鳴らす
+  _player.play('se.wav');
 }
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Keep Away From FUTON!!'),
-        backgroundColor: Colors.yellow,
+        backgroundColor: Colors.blue,
         
       ),
       body: Center(
         child: Column(
-          children: <Widget>[
-          
-            
+          children: <Widget>[//表示画面
             Text(
               '*現在時刻*',
-              style: Theme.of(context).textTheme.headline4,
+              style: TextStyle(
+                fontSize: 30.0,
+                fontFamily: 'IBMPlexMono',
+              ),
             ),
             Clock(),
             Text(
               '*アラーム時間の設定*',
-              style: Theme.of(context).textTheme.headline4,
+              style: TextStyle(
+                fontSize: 30.0,
+                fontFamily: 'IBMPlexMono',
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            
           ]
-        
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+      floatingActionButton: FloatingActionButton(//右下のボタン
+        onPressed: _sound,
         child: Icon(Icons.photo), //写真のアイコン
       ),
     );
