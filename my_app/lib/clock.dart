@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
+String _time = '';
 
 class Clock extends StatefulWidget {
   @override
@@ -9,9 +10,11 @@ class Clock extends StatefulWidget {
   }
 }
 
-class _ClockState extends State<Clock> {
-  String _time = '';
 
+
+class _ClockState extends State<Clock> {
+  
+  //String _time = '';
   @override
   void initState() {
     Timer.periodic(

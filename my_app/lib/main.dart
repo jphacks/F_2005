@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audio_cache.dart';//AudioCacheのインポート
+import 'package:audioplayers/audioplayers.dart'; 
 import 'clock.dart';
 
-AudioCache _player = AudioCache();
 
+
+AudioCache _player = AudioCache();
+AudioPlayer _ap;
 void main() => runApp(
       MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -12,8 +15,15 @@ void main() => runApp(
     );
 
 
-void _sound() {//右下のボタンを押すと呼び出される、音を鳴らす
-  _player.play('se.wav');
+void _sound() async{//右下のボタンを押すと呼び出される、音を鳴らす
+  //_player.play('bell.mp3');
+  //_player.loop('bgm.wav');
+  _ap = await _player.loop('bell.mp3');
+  
+
+}
+void _stopSound() {//右下のボタンを押すと呼び出される、音を鳴らす
+  _ap.stop();
 }
 
 class MyApp extends StatelessWidget {
@@ -43,11 +53,37 @@ class MyApp extends StatelessWidget {
                 fontFamily: 'IBMPlexMono',
               ),
             ),
+            Text(
+              '9:00',//変更できるようにする
+              style: TextStyle(
+              fontSize: 60.0,
+              fontFamily: 'IBMPlexMono',
+              ),
+            ),
+            RaisedButton(
+              elevation: 16,
+              child: const Text('変更'),
+              onPressed: () {},
+              color: Colors.orange,
+            ),
+            RaisedButton(
+              elevation: 16,
+              child: const Text('音オン'),
+              onPressed: _sound,
+              color: Colors.orange,
+            ),
+            RaisedButton(
+              elevation: 16,
+              child: const Text('音オフ'),
+              onPressed: _stopSound,
+              color: Colors.orange,
+            ),
           ]
         ),
       ),
+       
       floatingActionButton: FloatingActionButton(//右下のボタン
-        onPressed: _sound,
+        onPressed: () {},
         child: Icon(Icons.photo), //写真のアイコン
       ),
     );

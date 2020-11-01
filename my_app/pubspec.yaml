@@ -24,7 +24,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  audioplayers: ^0.15.1
+  audioplayers: ^0.15.1 #音声
+  flutter_datetime_picker: ^1.2.1 # 数字入力
 
   intl: ^0.15.8
   
@@ -45,6 +46,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/se.wav
+    - assets/bell.mp3
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
