@@ -23,6 +23,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_local_notifications:
+  shared_preferences:
 
   audioplayers: ^0.15.1 #音声
   flutter_datetime_picker: ^1.2.1 # 数字入力
