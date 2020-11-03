@@ -8,11 +8,8 @@ import "package:intl/intl.dart";
 AudioCache _player = AudioCache();
 AudioPlayer _ap;
 
-
-
 void main() => runApp(
       MaterialApp(
-        debugShowCheckedModeBanner: false,
         home: MyApp(),
       ),
     );
@@ -21,6 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false, 
       title: 'Flutter Datepicker Sample',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -47,15 +45,16 @@ void _stopSound() {//音オフ呼び出される、音を鳴らす
   _ap.stop();
 }
 
-
-
 class _MyHomePageState extends State<MyHomePage> {
   //選択した時刻
   var _mydatetime = new DateTime.now();
   //表示するフォーマット
   var formatter = new DateFormat('HH:mm');
 
+  
+
   @override
+  
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -63,35 +62,85 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.blue,
         
       ),
-      body: Center(
-        child: Column(
-          children: <Widget>[//表示画面
-            Text(
-              '*現在時刻*',
-              style: TextStyle(
-                fontSize: 30.0,
-                fontFamily: 'IBMPlexMono',
+      body:
+          new Column(
+            
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              new SizedBox(
+                width: 500.0,
+                height: 10.0,
               ),
-            ),
-            Clock(),
-            Text(
-              '*アラーム時間の設定*',
-              style: TextStyle(
-                fontSize: 30.0,
-                fontFamily: 'IBMPlexMono',
+              new Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  new Icon(
+                    Icons.access_time,
+                    color: const Color(0xFF8b91ff),
+                    size: 48.0),
+    
+                  new Text(
+                  "TIME",
+                    style: new TextStyle(fontSize:38.0,
+                    color: const Color(0xFF8b91ff),
+                    fontWeight: FontWeight.w400,
+                    fontFamily: "Itim-Regular",),
+                  )
+                ]
+    
               ),
-            ),
-            Text(
+    
+              Clock(),
+              new SizedBox(
+                width: 500.0,
+                height: 5.0,
+              ),
+             new Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  new Icon(
+                    Icons.access_alarms,
+                    color: const Color(0xFFff8080),
+                    size: 48.0),
+    
+                  new Text(
+                  "ALARM",
+                    style: new TextStyle(fontSize:38.0,
+                    color: const Color(0xFFff8080),
+                    fontWeight: FontWeight.w500,
+                    fontFamily: "Itim-Regular"),
+                  )
+                ]
+    
+              ),
+    
+              new Text(
               formatter.format(_mydatetime),
-              style: TextStyle(
-              fontSize: 60.0,
-              fontFamily: 'IBMPlexMono',
+                style: new TextStyle(fontSize:55.0,
+                color: const Color(0xFFff8080),
+                fontWeight: FontWeight.w400,
+                fontFamily: "Itim-Regular"),
               ),
-            ),
-            RaisedButton(//変更ボタン
-              elevation: 16,
-              child: const Text('変更'),
-              onPressed: () {
+              new SizedBox(
+                width: 500.0,
+                height: 5.0,
+              ),
+              RaisedButton(
+                child: const Text('アラーム時間の変更'),
+                textColor: Colors.white,
+                color: const Color(0xFFff8080),
+                shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+                
+                
+              ),
+              onPressed:  () {
                 DatePicker.showTimePicker(
                 context,
                 showTitleActions: true,
@@ -111,28 +160,57 @@ class _MyHomePageState extends State<MyHomePage> {
                 locale: LocaleType.jp
                 );
               },
-              color: Colors.orange,
-            ),
-            RaisedButton(
-              elevation: 16,
-              child: const Text('音オン'),
-              onPressed: _sound,
-              color: Colors.orange,
-            ),
-            RaisedButton(
-              elevation: 16,
-              child: const Text('音オフ'),
-              onPressed: _stopSound,
-              color: Colors.orange,
-            ),
-          ]
-        ),
-      ),
-       
-      floatingActionButton: FloatingActionButton(//右下のボタン
-        onPressed: () {},
-        child: Icon(Icons.photo), //写真のアイコン
-      ),
+              ),
+              new SizedBox(
+                width: 500.0,
+                height: 15.0,
+              ),
+              new Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  new RaisedButton(
+                    child: const Text('Sound ON'),
+                    textColor: Colors.white,
+                    color: const Color(0xFFffb225),
+                    shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    ),
+                    onPressed: _sound,
+                  ),
+                  new SizedBox(
+                    width: 50.0,
+                    height: 10.0,
+                  ),
+                  new RaisedButton(
+                    child: const Text('Sound OFF'),
+                    textColor: Colors.white,
+                    color: const Color(0xFFffb225),
+                    shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    ),
+                    onPressed: _stopSound,
+                  ),
+                  
+                ]
+    
+              ),
+            ]
+            
+    
+          ),
+        
+
+        floatingActionButton: new Visibility( 
+          visible: true,
+          child: new FloatingActionButton(
+            onPressed: (){},
+            child: new Icon(Icons.add_a_photo),
+          ), 
+        ),    
+      
     );
   }
+
 }
