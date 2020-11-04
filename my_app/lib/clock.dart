@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
+
 String _time = '';
 
 class Clock extends StatefulWidget {
@@ -10,10 +11,7 @@ class Clock extends StatefulWidget {
   }
 }
 
-
-
 class _ClockState extends State<Clock> {
-  
   //String _time = '';
   @override
   void initState() {
@@ -25,20 +23,19 @@ class _ClockState extends State<Clock> {
   }
 
   void _onTimer(Timer timer) {
-    var now = DateTime.now();
-    var formatter = DateFormat('HH:mm');
-    var formattedTime = formatter.format(now);
-    setState(() => _time = formattedTime);
+    TimeOfDay now = TimeOfDay.now();
+    setState(() => _time = now.format(context));
   }
 
   @override
   Widget build(BuildContext context) {
     return new Text(
       _time,
-      style: new TextStyle(fontSize:55.0,
-      color: const Color(0xFF8b91ff),
-      fontWeight: FontWeight.w400,
-      fontFamily: "Itim-Regular"),
+      style: new TextStyle(
+          fontSize: 55.0,
+          color: const Color(0xFF8b91ff),
+          fontWeight: FontWeight.w400,
+          fontFamily: "Itim-Regular"),
     );
   }
 }
