@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
   String debugTextForCamera = '';
 
   FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
-  TimeOfDay _time = TimeOfDay.now();
+  TimeOfDay _alarmTime = TimeOfDay.now();
 
   @override
   void initState() {
@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
         final int hour = prefs.getInt('hour');
         final int minute = prefs.getInt('minute');
         if (hour != null && minute != null) {
-          _time = TimeOfDay(hour: hour, minute: minute);
+          _alarmTime = TimeOfDay(hour: hour, minute: minute);
         }
       });
     });
@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> _updateNotification() async {
     await _flutterLocalNotificationsPlugin.cancelAll();
 
-    final Time time = Time(_time.hour, _time.minute, 0);
+    final Time time = Time(_alarmTime.hour, _alarmTime.minute, 0);
     final AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails('reminder', 'Reminder', 'Daily reminder');
     final IOSNotificationDetails iOSPlatformChannelSpecifics =
@@ -89,8 +89,8 @@ class _HomePageState extends State<HomePage> {
   void startCamera() async {
     final cameras = await availableCameras();
     final firstcamera = cameras.first;
-    final result = await Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) {
+    final result =
+        await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return TakePictureScreen(camera: firstcamera);
     }));
     setState(() {
@@ -154,7 +154,7 @@ class _HomePageState extends State<HomePage> {
                   )
                 ]),
             new Text(
-              formatter.format(_mydatetime),
+              "${_alarmTime.format(context)}",
               style: new TextStyle(
                   fontSize: 55.0,
                   color: const Color(0xFFff8080),
@@ -173,21 +173,23 @@ class _HomePageState extends State<HomePage> {
                 borderRadius: BorderRadius.circular(5),
               ),
               onPressed: () {
-                DatePicker.showTimePicker(context, showTitleActions: true,
-                    // onChanged内の処理はDatepickerの選択に応じて毎回呼び出される
-                    onChanged: (date) {
-                  // print('change $date');
-                },
-                    // onConfirm内の処理はDatepickerで選択完了後に呼び出される
-                    onConfirm: (date) {
+                showTimePicker(
+                  context: context,
+                  initialTime: _alarmTime,
+                ).then<void>((TimeOfDay value) {
+                  if (value == null) {
+                    return;
+                  }
                   setState(() {
-                    _mydatetime = date;
+                    _alarmTime = value;
                   });
-                },
-                    // Datepickerのデフォルトで表示する日時
-                    currentTime: DateTime.now(),
-                    // localによって色々な言語に対応
-                    locale: LocaleType.jp);
+                  SharedPreferences.getInstance()
+                      .then((SharedPreferences prefs) {
+                    prefs.setInt('hour', value.hour);
+                    prefs.setInt('minute', value.minute);
+                  });
+                  _updateNotification();
+                });
               },
             ),
             new SizedBox(
@@ -222,53 +224,7 @@ class _HomePageState extends State<HomePage> {
                     onPressed: _stopSound,
                   ),
                 ]),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text('Time', style: theme.textTheme.subtitle),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: theme.dividerColor),
-                      ),
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        showTimePicker(
-                          context: context,
-                          initialTime: _time,
-                        ).then<void>((TimeOfDay value) {
-                          if (value == null) {
-                            return;
-                          }
-                          setState(() {
-                            _time = value;
-                          });
-                          SharedPreferences.getInstance()
-                              .then((SharedPreferences prefs) {
-                            prefs.setInt('hour', value.hour);
-                            prefs.setInt('minute', value.minute);
-                          });
-                          _updateNotification();
-                        });
-                      },
-                      child: Row(
-                        children: <Widget>[
-                          Text('${_time.format(context)}'),
-                          const Icon(Icons.arrow_drop_down,
-                              color: Colors.black54),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Text(
-              debugTextForCamera
-            ),
+            Text(debugTextForCamera),
           ]),
       floatingActionButton: new Visibility(
         visible: true,
