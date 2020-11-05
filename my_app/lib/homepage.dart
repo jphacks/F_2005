@@ -4,7 +4,6 @@ import 'package:audioplayers/audio_cache.dart'; //AudioCacheのインポート
 import 'package:audioplayers/audioplayers.dart';
 import 'package:my_app/camera.dart';
 import 'clock.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import "package:intl/intl.dart";
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,12 +29,6 @@ void _stopSound() {
 }
 
 class _HomePageState extends State<HomePage> {
-  //選択した時刻
-  var _mydatetime = new DateTime.now();
-
-  //表示するフォーマット
-  var formatter = new DateFormat('HH:mm');
-
   String debugTextForCamera = '';
 
   FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
