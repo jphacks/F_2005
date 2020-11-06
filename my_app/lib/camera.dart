@@ -45,12 +45,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     super.dispose();
   }
 
-  void endJudging() {
-    setState(() {
-      _buttonEnabled = true;
-    });
-  }
-
   void startJudging() async {
     setState(() {
       _buttonEnabled = false;
@@ -76,10 +70,10 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       _probability =
           json.decode(response.body)['predictions'][0]['probability'];
       if (_probability >= 0.7) {
-        Navigator.of(context).pop(true);
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+        await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
           return VideoPlayerScreen();
         }));
+        Navigator.of(context).pop(true);
       }
       print(_probability);
     } catch (e) {
@@ -95,6 +89,13 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
   void judge() {
     startJudging();
+  }
+
+  void debug() async {
+    await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return VideoPlayerScreen();
+    }));
+    Navigator.of(context).pop(true);
   }
 
   @override
@@ -118,9 +119,22 @@ class TakePictureScreenState extends State<TakePictureScreen> {
               : Container()),
         ],
       ),
-      floatingActionButton: RaisedButton(
-        onPressed: _buttonEnabled ? judge : null,
-        child: Text(_buttonText),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          RaisedButton(
+            onPressed: _buttonEnabled ? judge : null,
+            child: Text(_buttonText),
+          ),
+          Container(
+            // 余白のためContainerでラップ
+            margin: EdgeInsets.only(bottom: 16.0),
+            child: RaisedButton(
+              onPressed: _buttonEnabled ? debug : null,
+              child: Text('強制認識'),
+            ),
+          ),
+        ],
       ),
     );
   }
