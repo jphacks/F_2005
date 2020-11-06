@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:my_app/videoPlayer.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:path/path.dart' show join;
@@ -74,7 +75,12 @@ class TakePictureScreenState extends State<TakePictureScreen> {
           body: file.readAsBytesSync());
       _probability =
           json.decode(response.body)['predictions'][0]['probability'];
-      if (_probability >= 0.7) Navigator.of(context).pop(true);
+      if (_probability >= 0.7) {
+        Navigator.of(context).pop(true);
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          return VideoPlayerScreen();
+        }));
+      }
       print(_probability);
     } catch (e) {
       print(e);
