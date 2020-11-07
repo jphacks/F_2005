@@ -1,6 +1,8 @@
-# Keep Away from FUTON
+# Keep Away from Futon
 
-[![IMAGE ALT TEXT HERE](https://jphacks.com/wp-content/uploads/2020/09/JPHACKS2020_ogp.jpg)](https://www.youtube.com/watch?v=G5rULR53uMk)
+<img src="https://user-images.githubusercontent.com/30472855/98431697-1e2bd000-20fb-11eb-88be-73c68340157a.png" width="300">
+
+[![](https://img.youtube.com/vi/imMLxJCqtd8/0.jpg)](https://www.youtube.com/watch?v=imMLxJCqtd8)
 
 ## 製品概要
 
@@ -22,6 +24,15 @@ iPhone/Android用の目覚ましアプリです。
 #### 2. ミライ小町ちゃんが『おはよう』と言って起こしてくれる
 
 #### 3. 布団の画像を送ると畳んでいるかの判定をしてくれる
+
+### 使い方
+
+1. 就寝前にアプリで起床時刻を設定
+1. 快眠する
+1. 設定時刻になるとアラームが鳴る
+1. アプリを起動しても音が鳴り止まない。止めたければ畳んだ布団の画像を撮影
+1. 畳んだことが認められると音が止まる
+1. ミライ小町が可愛く挨拶してくれる
 
 ### 解決出来ること
 
