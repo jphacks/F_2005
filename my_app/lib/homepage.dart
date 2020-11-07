@@ -65,7 +65,8 @@ class _HomePageState extends State<HomePage> {
 
     final Time time = Time(_alarmTime.hour, _alarmTime.minute, 0);
     final AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails('reminder', 'Reminder', 'Daily reminder');
+        AndroidNotificationDetails('reminder', 'Reminder', 'Daily reminder',
+            sound: RawResourceAndroidNotificationSound('bell'));
     final IOSNotificationDetails iOSPlatformChannelSpecifics =
         IOSNotificationDetails();
     final NotificationDetails platformChannelSpecifics = NotificationDetails(
