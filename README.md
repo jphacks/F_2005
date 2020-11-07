@@ -4,7 +4,7 @@
 
 ## YouTube
 
-[![](https://img.youtube.com/vi/imMLxJCqtd8/0.jpg)](https://www.youtube.com/watch?v=imMLxJCqtd8)
+[![](https://img.youtube.com/vi/imMLxJCqtd8/0.jpg)](https://www.youtube.com/watch?v=Uqg-81OjKJs)
 
 ## 製品概要
 
