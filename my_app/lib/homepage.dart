@@ -19,7 +19,7 @@ class HomePage extends StatefulWidget {
 
 void _stopSound() {
   //音オフ呼び出される、音を鳴らす
-  _audioPlayer.stop();
+  if (_audioPlayer != null) _audioPlayer.stop();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -48,13 +48,13 @@ class _HomePageState extends State<HomePage> {
 
     _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('app_icon');
+        AndroidInitializationSettings('app_icon');
     const IOSInitializationSettings initializationSettingsIOS =
-    IOSInitializationSettings();
+        IOSInitializationSettings();
     const InitializationSettings initializationSettings =
-    InitializationSettings(
-        android: initializationSettingsAndroid,
-        iOS: initializationSettingsIOS);
+        InitializationSettings(
+            android: initializationSettingsAndroid,
+            iOS: initializationSettingsIOS);
     _flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
@@ -71,9 +71,9 @@ class _HomePageState extends State<HomePage> {
 
     final Time time = Time(_alarmTime.hour, _alarmTime.minute, 0);
     final AndroidNotificationDetails androidPlatformChannelSpecifics =
-    AndroidNotificationDetails('reminder', 'Reminder', 'Daily reminder');
+        AndroidNotificationDetails('reminder', 'Reminder', 'Daily reminder');
     final IOSNotificationDetails iOSPlatformChannelSpecifics =
-    IOSNotificationDetails();
+        IOSNotificationDetails();
     final NotificationDetails platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
         iOS: iOSPlatformChannelSpecifics);
@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> {
     final cameras = await availableCameras();
     final firstcamera = cameras.first;
     final result =
-    await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+        await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return TakePictureScreen(camera: firstcamera);
     }));
     setState(() {
@@ -197,25 +197,21 @@ class _HomePageState extends State<HomePage> {
               width: 500.0,
               height: 200.0,
             ),
-            ButtonTheme(
-              minWidth: 300.0,
-              height: 70.0,
-              child: RaisedButton.icon(
-                icon: const Icon(
-                  Icons.add_a_photo,
-                  color: Colors.white,
-                ),
-                label: const Text('カメラで布団を撮影'),
-                onPressed: startCamera,
-                color: Colors.blue,
-                textColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                //padding: new EdgeInsets.all(20),
-              ),
-            )
           ]),
+      floatingActionButton: new RaisedButton.icon(
+        icon: const Icon(
+          Icons.add_a_photo,
+          color: Colors.white,
+        ),
+        label: const Text('カメラで布団を撮影'),
+        onPressed: startCamera,
+        color: Colors.blue,
+        textColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        //padding: new EdgeInsets.all(20),
+      ),
     );
   }
 }
