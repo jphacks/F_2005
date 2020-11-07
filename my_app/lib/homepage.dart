@@ -4,12 +4,11 @@ import 'package:audioplayers/audio_cache.dart'; //AudioCacheのインポート
 import 'package:audioplayers/audioplayers.dart';
 import 'package:my_app/camera.dart';
 import 'clock.dart';
-import "package:intl/intl.dart";
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 AudioCache _player = AudioCache();
-AudioPlayer _ap;
+AudioPlayer _audioPlayer;
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -18,14 +17,9 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-void _sound() async {
-  //音オンで呼び出される、音を鳴らす
-  _ap = await _player.loop('bell.mp3');
-}
-
 void _stopSound() {
   //音オフ呼び出される、音を鳴らす
-  _ap.stop();
+  if (_audioPlayer != null) _audioPlayer.stop();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -33,6 +27,7 @@ class _HomePageState extends State<HomePage> {
 
   FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
   TimeOfDay _alarmTime = TimeOfDay.now();
+  String alarmTimeStr;
 
   @override
   void initState() {
@@ -44,6 +39,9 @@ class _HomePageState extends State<HomePage> {
         final int minute = prefs.getInt('minute');
         if (hour != null && minute != null) {
           _alarmTime = TimeOfDay(hour: hour, minute: minute);
+          this.alarmTimeStr =
+              _alarmTime.hour.toString() + _alarmTime.minute.toString();
+          soundTheAlarm(this.alarmTimeStr);
         }
       });
     });
@@ -60,6 +58,14 @@ class _HomePageState extends State<HomePage> {
     _flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
+  void soundTheAlarm(setAlarmTimeStr) async {
+    TimeOfDay now = TimeOfDay.now();
+    String nowStr = now.hour.toString() + now.minute.toString();
+    if (nowStr == setAlarmTimeStr) {
+      _audioPlayer = await _player.loop('bell.mp3');
+    }
+  }
+
   Future<void> _updateNotification() async {
     await _flutterLocalNotificationsPlugin.cancelAll();
 
@@ -73,13 +79,14 @@ class _HomePageState extends State<HomePage> {
         iOS: iOSPlatformChannelSpecifics);
     _flutterLocalNotificationsPlugin.showDailyAtTime(
         0,
-        'Keep Away From FUTON!!',
-        "Good morning!!!",
+        'Keep Away from FUTON!!',
+        "Good morning!!布団を畳んでください",
         time,
         platformChannelSpecifics);
   }
 
   void startCamera() async {
+    _stopSound();
     final cameras = await availableCameras();
     final firstcamera = cameras.first;
     final result =
@@ -96,7 +103,7 @@ class _HomePageState extends State<HomePage> {
     final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Keep Away From FUTON!!'),
+        title: Text('Keep Away from FUTON!!'),
         backgroundColor: Colors.blue,
       ),
       body: new Column(
@@ -163,7 +170,7 @@ class _HomePageState extends State<HomePage> {
               textColor: Colors.white,
               color: const Color(0xFFff8080),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(10),
               ),
               onPressed: () {
                 showTimePicker(
@@ -185,46 +192,25 @@ class _HomePageState extends State<HomePage> {
                 });
               },
             ),
+            Text(debugTextForCamera),
             new SizedBox(
               width: 500.0,
-              height: 15.0,
+              height: 200.0,
             ),
-            new Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  new RaisedButton(
-                    child: const Text('Sound ON'),
-                    textColor: Colors.white,
-                    color: const Color(0xFFffb225),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    onPressed: _sound,
-                  ),
-                  new SizedBox(
-                    width: 50.0,
-                    height: 10.0,
-                  ),
-                  new RaisedButton(
-                    child: const Text('Sound OFF'),
-                    textColor: Colors.white,
-                    color: const Color(0xFFffb225),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    onPressed: _stopSound,
-                  ),
-                ]),
-            Text(debugTextForCamera),
           ]),
-      floatingActionButton: new Visibility(
-        visible: true,
-        child: new FloatingActionButton(
-          onPressed: startCamera,
-          child: new Icon(Icons.add_a_photo),
+      floatingActionButton: new RaisedButton.icon(
+        icon: const Icon(
+          Icons.add_a_photo,
+          color: Colors.white,
         ),
+        label: const Text('カメラで布団を撮影'),
+        onPressed: startCamera,
+        color: Colors.blue,
+        textColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        //padding: new EdgeInsets.all(20),
       ),
     );
   }
