@@ -7,6 +7,8 @@ import 'clock.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'videoPlayer.dart';
+
 AudioCache _player = AudioCache();
 AudioPlayer _audioPlayer;
 
@@ -23,8 +25,6 @@ void _stopSound() {
 }
 
 class _HomePageState extends State<HomePage> {
-  String debugTextForCamera = '';
-
   FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
   TimeOfDay _alarmTime = TimeOfDay.now();
   String alarmTimeStr;
@@ -87,16 +87,18 @@ class _HomePageState extends State<HomePage> {
   }
 
   void startCamera() async {
-    _stopSound();
     final cameras = await availableCameras();
     final firstcamera = cameras.first;
     final result =
         await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return TakePictureScreen(camera: firstcamera);
     }));
-    setState(() {
-      debugTextForCamera = result.toString();
-    });
+    if (result == true) {
+      _stopSound();
+      await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+        return VideoPlayerScreen();
+      }));
+    }
   }
 
   @override
@@ -193,7 +195,6 @@ class _HomePageState extends State<HomePage> {
                 });
               },
             ),
-            Text(debugTextForCamera),
             new SizedBox(
               width: 500.0,
               height: 200.0,

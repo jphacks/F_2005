@@ -70,9 +70,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       _probability =
           json.decode(response.body)['predictions'][0]['probability'];
       if (_probability >= 0.7) {
-        await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-          return VideoPlayerScreen();
-        }));
         Navigator.of(context).pop(true);
       }
       print(_probability);
@@ -92,9 +89,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   }
 
   void debug() async {
-    await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return VideoPlayerScreen();
-    }));
     Navigator.of(context).pop(true);
   }
 
