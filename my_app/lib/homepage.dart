@@ -106,7 +106,7 @@ class _HomePageState extends State<HomePage> {
     final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Keep Away from FUTON!!'),
+        title: Text('Keep Away from Futon'),
         backgroundColor: Colors.blue,
       ),
       body: new Column(
